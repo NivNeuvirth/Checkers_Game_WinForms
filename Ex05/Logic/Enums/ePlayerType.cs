@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CheckersProject.Logic.Enums
+namespace Logic.Enums
 {
     public enum ePlayerType
     {

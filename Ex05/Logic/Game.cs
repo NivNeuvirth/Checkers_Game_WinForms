@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Text.RegularExpressions;
-using static CheckersProject.Logic.MoveRules;
-using CheckersProject.UI;
-using CheckersProject.Logic.Enums;
+using static Logic.MoveRules;
+using Logic.Enums;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace CheckersProject.Logic
+namespace Logic
 {
     public class Game
     {
@@ -21,7 +21,7 @@ namespace CheckersProject.Logic
 
         private bool isPlayersChecker(Player i_Player, int i_Row, int i_Col)
         {
-            Checker? checker = m_Board.GetCheckerAt(i_Row, i_Col);
+            Checker checker = m_Board.GetCheckerAt(i_Row, i_Col);
 
             return checker != null && i_Player.m_Checkers.Contains(checker);
         }
@@ -77,7 +77,7 @@ namespace CheckersProject.Logic
                 int capturedRow = (i_Move.m_StartRow + i_Move.m_EndRow) / 2;
                 int capturedCol = (i_Move.m_StartCol + i_Move.m_EndCol) / 2;
 
-                Checker? capturedChecker = m_Board.GetCheckerAt(capturedRow, capturedCol);
+                Checker capturedChecker = m_Board.GetCheckerAt(capturedRow, capturedCol);
 
                 if (capturedChecker == null || !isOpponentChecker(i_Player.m_Checkers[0], capturedChecker))
                 {
@@ -140,7 +140,7 @@ namespace CheckersProject.Logic
                 {
                     int jumpedRow = i_checker.m_X + direction.RowDelta;
                     int jumpedCol = i_checker.m_Y + direction.ColDelta;
-                    Checker? jumpedChecker = m_Board.GetCheckerAt(jumpedRow, jumpedCol);
+                    Checker jumpedChecker = m_Board.GetCheckerAt(jumpedRow, jumpedCol);
 
                     if (jumpedChecker != null && isOpponentChecker(i_currentPlayer.m_Checkers[0], jumpedChecker))
                     {
@@ -281,38 +281,38 @@ namespace CheckersProject.Logic
             return i_CurrentPlayer = i_CurrentPlayer == m_Player1 ? m_Player2 : m_Player1;
         }
 
-        public void ExecuteCaptures(List<Move> i_Captures, Player i_CurrentPlayer)
-        {
-            Move chosenCapture = null;
+        //public void ExecuteCaptures(List<Move> i_Captures, Player i_CurrentPlayer)
+        //{
+        //    Move chosenCapture = null;
 
-            while (chosenCapture == null)
-            {
-                chosenCapture = GameUI.ChooseFirstCaptureMove(ref i_Captures, i_CurrentPlayer);
-            }
+        //    while (chosenCapture == null)
+        //    {
+        //        chosenCapture = GameUI.ChooseFirstCaptureMove(ref i_Captures, i_CurrentPlayer);
+        //    }
 
-            ExecuteMove(chosenCapture, i_CurrentPlayer);
-            RemoveMoveFromList(chosenCapture, i_Captures);
-            Checker currentChecker = m_Board.GetCheckerAt(chosenCapture.m_EndRow, chosenCapture.m_EndCol);
+        //    ExecuteMove(chosenCapture, i_CurrentPlayer);
+        //    RemoveMoveFromList(chosenCapture, i_Captures);
+        //    Checker currentChecker = m_Board.GetCheckerAt(chosenCapture.m_EndRow, chosenCapture.m_EndCol);
             
-            while (true)
-            {
-                if (i_Captures.Count < 1)
-                {
-                    switchPlayer(i_CurrentPlayer);
-                    break;
-                }
+        //    while (true)
+        //    {
+        //        if (i_Captures.Count < 1)
+        //        {
+        //            switchPlayer(i_CurrentPlayer);
+        //            break;
+        //        }
 
-                Move nextCapture = GameUI.ChooseNextCaptureMove(i_Captures, currentChecker);
+        //        Move nextCapture = GameUI.ChooseNextCaptureMove(i_Captures, currentChecker);
 
-                if (nextCapture == null)
-                {
-                    continue;
-                }
+        //        if (nextCapture == null)
+        //        {
+        //            continue;
+        //        }
 
-                ExecuteMove(nextCapture, i_CurrentPlayer);
-                currentChecker = m_Board.GetCheckerAt(nextCapture.m_EndRow, nextCapture.m_EndCol);         
-            }    
-        }
+        //        ExecuteMove(nextCapture, i_CurrentPlayer);
+        //        currentChecker = m_Board.GetCheckerAt(nextCapture.m_EndRow, nextCapture.m_EndCol);         
+        //    }    
+        //}
 
         public List<Move> GetPossibleCapturesForPlayer(Player i_CurrentPlayer)
         {

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CheckersProject.Logic.Enums;
+using Logic.Enums;
 
-namespace CheckersProject.Logic
+namespace Logic
 {
     public class Board
     {
-        private Checker?[,] m_Board;
+        private Checker[,] m_Board;
         public readonly int m_Size;
 
         public Board(int i_Size, Player i_Player1, Player i_Player2)
@@ -45,7 +45,7 @@ namespace CheckersProject.Logic
             }
         }
 
-        public Checker?[,] GetBoardState()
+        public Checker[,] GetBoardState()
         {
             return m_Board;
         }
@@ -55,7 +55,7 @@ namespace CheckersProject.Logic
             return i_Row >= 0 && i_Row < m_Board.Length && i_Col >= 0 && i_Col < m_Board.Length;
         }
 
-        public Checker? GetCheckerAt(int i_Row, int i_Col)
+        public Checker GetCheckerAt(int i_Row, int i_Col)
         {
             return IsInsideBoard(i_Row, i_Col) ? m_Board[i_Row, i_Col] : null;
         }
@@ -67,7 +67,7 @@ namespace CheckersProject.Logic
 
         public void MoveChecker(Move i_Move)
         {
-            Checker? movingChecker = m_Board[i_Move.m_StartRow, i_Move.m_StartCol];
+            Checker movingChecker = m_Board[i_Move.m_StartRow, i_Move.m_StartCol];
 
             movingChecker.m_X = i_Move.m_EndRow;
             movingChecker.m_Y = i_Move.m_EndCol;

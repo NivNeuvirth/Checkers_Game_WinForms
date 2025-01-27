@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35521.163 d17.12
+VisualStudioVersion = 17.12.35521.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Ex05\Logic.csproj", "{3BD2976F-2FA9-4449-87F8-85501906C136}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{509A43A6-2C7B-4BCC-A825-7051208F066D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{4EA1E6E8-32F5-4D21-95EC-AA8E80CF5337}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3BD2976F-2FA9-4449-87F8-85501906C136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3BD2976F-2FA9-4449-87F8-85501906C136}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3BD2976F-2FA9-4449-87F8-85501906C136}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3BD2976F-2FA9-4449-87F8-85501906C136}.Release|Any CPU.Build.0 = Release|Any CPU
 		{509A43A6-2C7B-4BCC-A825-7051208F066D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{509A43A6-2C7B-4BCC-A825-7051208F066D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{509A43A6-2C7B-4BCC-A825-7051208F066D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{509A43A6-2C7B-4BCC-A825-7051208F066D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EA1E6E8-32F5-4D21-95EC-AA8E80CF5337}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EA1E6E8-32F5-4D21-95EC-AA8E80CF5337}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EA1E6E8-32F5-4D21-95EC-AA8E80CF5337}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EA1E6E8-32F5-4D21-95EC-AA8E80CF5337}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

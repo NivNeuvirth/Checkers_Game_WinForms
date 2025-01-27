@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CheckersProject.Logic.Enums;
+using Logic.Enums;
 
-namespace CheckersProject.Logic
+namespace Logic
 {
     public class Checker
     {

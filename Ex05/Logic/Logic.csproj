@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3BD2976F-2FA9-4449-87F8-85501906C136}</ProjectGuid>
+    <ProjectGuid>{4EA1E6E8-32F5-4D21-95EC-AA8E80CF5337}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Ex05</RootNamespace>
-    <AssemblyName>Ex05</AssemblyName>
+    <RootNamespace>Logic</RootNamespace>
+    <AssemblyName>Logic</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

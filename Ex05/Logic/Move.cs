@@ -1,7 +1,7 @@
 ﻿using System;
-using CheckersProject.Logic.Enums;
+using Logic.Enums;
 
-namespace CheckersProject.Logic
+namespace Logic
 {
     public class Move
     {
