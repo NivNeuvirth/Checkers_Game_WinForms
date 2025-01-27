@@ -1,0 +1,95 @@
+# Build Folders
+bin/
+obj/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.unsuccessfulbuild
+
+# Logs and Debug Files
+*.log
+
+# IDE-specific files
+.vscode/
+.vs/
+.idea/
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# Rider Files
+*.sln.iml
+.idea/
+
+# Build Artifacts
+*.dll
+*.exe
+*.pdb
+*.cache
+*.ilk
+*.lib
+*.exp
+*.db
+
+# Configuration Files
+appsettings.json
+appsettings.*.json
+secrets.json
+
+# Temporary Files
+*.tmp
+*.temp
+*.bak
+*.old
+*.backup
+
+# Generated Files
+*.g.cs
+*.g.i.cs
+*.g.*
+*.AssemblyAttributes.cs
+*.Generated.cs
+
+# Resharper files
+_ReSharper*/
+*.DotSettings.user
+
+# Deployment Files
+.publish/
+*.publishproj
+
+# Package Files
+*.nuget.g.props
+*.nuget.g.targets
+project.assets.json
+project.nuget.cache
+
+# Coverage and Test Results
+*.coverage
+*.coveragexml
+TestResults/
+*.trx
+
+# Documentation
+*.swagger
+*.api.json
+
+# Database Files
+*.mdf
+*.ldf
+*.ndf
+
+# Tools
+Tools/
+JetBrains/
+
+# Azure
+*.publishsettings
+*.azure*
+ServiceConfiguration*.cscfg
