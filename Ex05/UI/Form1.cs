@@ -17,16 +17,11 @@ namespace UI
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         public Button ButtonDone
         {
             get
             {
-                return buttonDone;
+                return button1;
             }
         }
 
@@ -34,12 +29,12 @@ namespace UI
         {
             get
             {
-                return textBoxPlayer1Name.Text;
+                return textBox1.Text;
             }
 
             set
             {
-                textBoxPlayer1Name.Text = value;
+                textBox1.Text = value;
             }
         }
 
@@ -47,12 +42,12 @@ namespace UI
         {
             get
             {
-                return textBoxPlayer2Name.Text;
+                return textBox2.Text;
             }
 
             set
             {
-                textBoxPlayer2Name.Text = value;
+                textBox2.Text = value;
             }
         }
 
@@ -60,7 +55,7 @@ namespace UI
         {
             get
             {
-                return !checkBoxPlayer2.Checked;
+                return !checkBox1.Checked;
             }
         }
 
@@ -68,24 +63,28 @@ namespace UI
         {
             get
             {
-                if (radioButtonSmallBoardSize.Checked)
+                int boardSize = 0;
+
+                if (radioButton1.Checked)
                 {
-                    return (int)GameManagment.eBoardSizeOptions.SmallSize;
+                    boardSize = 6;
                 }
-                else if (radioButtonMediumBoardSize.Checked)
+                else if (radioButton2.Checked)
                 {
-                    return (int)GameManagment.eBoardSizeOptions.MediumSize;
+                    boardSize = 8;
                 }
                 else
                 {
-                    return (int)GameManagment.eBoardSizeOptions.LargeSize;
+                    boardSize = 10;
                 }
+
+                return boardSize;
             }
         }
 
-        private void buttonDone_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(textBoxPlayer1Name.Text) || string.IsNullOrEmpty(textBoxPlayer2Name.Text))
+            if (string.IsNullOrEmpty(textBox1.Text) || string.IsNullOrEmpty(textBox2.Text))
             {
                 MessageBox.Show("You must fill the players names");
             }
@@ -95,19 +94,24 @@ namespace UI
             }
         }
 
-        private void checkBoxPlayer2_CheckedChanged(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
-            textBoxPlayer2Name.Enabled = textBoxPlayer2Name.Enabled == true ? false : true;
 
-            if (textBoxPlayer2Name.Enabled)
+        }
+
+        private void checkBox1_CheckedChanged_1(object sender, EventArgs e)
+        {
+            textBox2.Enabled = textBox2.Enabled == true ? false : true;
+
+            if (!textBox2.Enabled)
             {
-                this.textBoxPlayer2Name.BackColor = Color.White;
-                this.textBoxPlayer2Name.Text = string.Empty;
+                this.textBox2.BackColor = Color.White;
+                this.textBox2.Text = string.Empty;
             }
             else
             {
-                this.textBoxPlayer2Name.BackColor = System.Drawing.SystemColors.MenuBar;
-                this.textBoxPlayer2Name.Text = "[Computer]";
+                this.textBox2.BackColor = System.Drawing.SystemColors.MenuBar;
+                this.textBox2.Text = "[Computer]";
             }
         }
     }

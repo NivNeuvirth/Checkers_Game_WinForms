@@ -8,7 +8,7 @@ namespace Logic.Enums
 {
     public enum ePlayerType
     {
-        Human,
+        Human = 1,
         Computer
     }
 }

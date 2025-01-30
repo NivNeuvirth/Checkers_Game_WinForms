@@ -28,5 +28,14 @@ namespace Logic
         {
             m_Checkers.Remove(i_Checker);
         }
+
+        public static void Swap(ref Player io_PlayerOne, ref Player io_PlayerTwo)
+        {
+            Player temp;
+
+            temp = io_PlayerOne;
+            io_PlayerOne = io_PlayerTwo;
+            io_PlayerTwo = temp;
+        }
     }
 }

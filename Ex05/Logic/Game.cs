@@ -1,22 +1,65 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Linq;
 using static Logic.MoveRules;
 using Logic.Enums;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Logic
 {
     public class Game
     {
+        public EventHandler NewGameStarted;
+        public EventHandler BoardUpdated;
+        public EventHandler GameEnded;
         public Board m_Board;
-        public Player m_Player1;
-        public Player m_Player2;
+        //public Player m_Player1;
+        //public Player m_Player2;
+        public Player m_CurrentPlayer;
+        public Player m_OtherPlayer;
+        public Checker m_LastCheckerPlaced;
+
+        public Checker LastCheckerPlaced
+        {
+            get
+            {
+                return m_LastCheckerPlaced;
+            }
+        }
+
+        public void OnNewGameStarted()
+        {
+            EventArgs e = new EventArgs();
+
+            if (NewGameStarted != null)
+            {
+                NewGameStarted(this, e);
+            }
+        }
+
+        public void OnBoardUpdated(BoardUpdatedEventArgs bu)
+        {
+            if (BoardUpdated != null)
+            {
+                BoardUpdated(this, bu);
+            }
+        }
+
+        public void OnGameEnded(GameEndedEventArgs ge)
+        {
+            if (GameEnded != null)
+            {
+                GameEnded(this, ge);
+            }
+        }
 
         public void InitializeGame(string i_Player1Name, string i_Player2Name, ePlayerType i_Player2Type, int i_BoardSize)
         {
-            m_Player1 = new Player(i_Player1Name, ePlayerType.Human, eCheckerSymbol.WhiteChecker);
-            m_Player2 = new Player(i_Player2Name, i_Player2Type, eCheckerSymbol.BlackChecker);
-            m_Board = new Board(i_BoardSize, m_Player1, m_Player2);
+            m_CurrentPlayer = new Player(i_Player1Name, ePlayerType.Human, eCheckerSymbol.WhiteChecker);
+            m_OtherPlayer = new Player(i_Player2Name, i_Player2Type, eCheckerSymbol.BlackChecker);
+            m_Board = new Board(i_BoardSize, m_CurrentPlayer, m_OtherPlayer);
+            OnNewGameStarted();
         }
 
         private bool isPlayersChecker(Player i_Player, int i_Row, int i_Col)
@@ -28,6 +71,10 @@ namespace Logic
 
         private bool isValidDirection(Checker i_Checker, int i_TargetRow, int i_TargetCol)
         {
+            if (i_Checker == null)
+            {
+                throw new ArgumentNullException(nameof(i_Checker), "Checker object is null");
+            }
             bool isValid = false;
             int rowDelta = i_TargetRow - i_Checker.m_X;
             int colDelta = i_TargetCol - i_Checker.m_Y;
@@ -158,16 +205,73 @@ namespace Logic
             return possibleMoves;
         }
 
+        //public void ExecuteMove(Move i_Move, Player i_CurrentPlayer)
+        //{
+        //    BoardUpdatedEventArgs bu;
+        //    GameEndedEventArgs ge;
+        //    List<Move> possibleCaptures = GetPossibleCapturesForPlayer(i_CurrentPlayer);
+        //    Checker movingChecker = m_Board.GetCheckerAt(i_Move.m_StartRow, i_Move.m_StartCol);
+        //    m_LastCheckerPlaced = movingChecker;
+        //    if (movingChecker == null)
+        //    {
+        //        Debug.Write("No checker selected at this position!");
+        //        return; // Early return if no checker is found
+        //    }
+
+        //    if (Math.Abs(i_Move.m_EndRow - i_Move.m_StartRow) == 2)
+        //    {
+        //        int capturedRow = (i_Move.m_StartRow + i_Move.m_EndRow) / 2;
+        //        int capturedCol = (i_Move.m_StartCol + i_Move.m_EndCol) / 2;
+        //        Checker capturedChecker = m_Board.GetCheckerAt(capturedRow, capturedCol);
+        //        Player opponentPlayer = m_OtherPlayer;
+
+        //        if (capturedChecker != null)
+        //        {
+        //            opponentPlayer.RemoveChecker(capturedChecker);
+        //        }
+
+        //        m_Board.RemoveChecker(capturedRow, capturedCol);
+        //        i_Move.IsSkipMove = true;
+        //        i_Move.m_Eaten = new Point(capturedRow, capturedCol);
+        //    }
+
+        //    if (shouldPromoteToKing(movingChecker, i_Move.m_EndRow))
+        //    {
+        //        promoteToKing(movingChecker);
+        //    }
+
+        //    m_Board.MoveChecker(i_Move);
+        //    SwitchPlayer();
+        //    bu = new BoardUpdatedEventArgs(i_Move);
+        //    OnBoardUpdated(bu);
+        //    //SwitchPlayer();
+        //    if (CheckGameOver())
+        //    {
+        //        CalculateScore(m_OtherPlayer);
+        //        ge = new GameEndedEventArgs("Game Ended");
+        //        OnGameEnded(ge);
+        //    }
+        //}
+
         public void ExecuteMove(Move i_Move, Player i_CurrentPlayer)
         {
+            BoardUpdatedEventArgs bu;
+            GameEndedEventArgs ge;
             Checker movingChecker = m_Board.GetCheckerAt(i_Move.m_StartRow, i_Move.m_StartCol);
+            m_LastCheckerPlaced = movingChecker;
+
+            if (movingChecker == null)
+            {
+                Debug.Write("No checker selected at this position!");
+                return; // Early return if no checker is found
+            }
 
             if (Math.Abs(i_Move.m_EndRow - i_Move.m_StartRow) == 2)
             {
                 int capturedRow = (i_Move.m_StartRow + i_Move.m_EndRow) / 2;
                 int capturedCol = (i_Move.m_StartCol + i_Move.m_EndCol) / 2;
                 Checker capturedChecker = m_Board.GetCheckerAt(capturedRow, capturedCol);
-                Player opponentPlayer = i_CurrentPlayer == m_Player1 ? m_Player2 : m_Player1;
+                Player opponentPlayer = m_OtherPlayer;
 
                 if (capturedChecker != null)
                 {
@@ -175,6 +279,8 @@ namespace Logic
                 }
 
                 m_Board.RemoveChecker(capturedRow, capturedCol);
+                i_Move.IsSkipMove = true;
+                i_Move.m_Eaten = new Point(capturedRow, capturedCol);
             }
 
             if (shouldPromoteToKing(movingChecker, i_Move.m_EndRow))
@@ -183,7 +289,38 @@ namespace Logic
             }
 
             m_Board.MoveChecker(i_Move);
+
+            // Fire board update event before switching players
+            bu = new BoardUpdatedEventArgs(i_Move);
+            OnBoardUpdated(bu);
+
+            // Check if game over
+            if (CheckGameOver())
+            {
+                CalculateScore(m_CurrentPlayer);
+                ge = new GameEndedEventArgs("Game Ended");
+                OnGameEnded(ge);
+                return;
+            }
+
+            // Switch player
+            SwitchPlayer();
+
+            // Ensure UI updates after switching players
+            bu = new BoardUpdatedEventArgs(i_Move);
+            OnBoardUpdated(bu);
+
+            // If new player is the computer, execute its move
+            if (m_CurrentPlayer.m_PlayerType == ePlayerType.Computer)
+            {
+                Move computerMove = ProcessComputerTurn(m_CurrentPlayer);
+                ExecuteMove(computerMove, m_CurrentPlayer);
+            }
         }
+
+
+
+
 
         private bool shouldPromoteToKing(Checker i_Checker, int i_EndRow)
         {
@@ -257,8 +394,8 @@ namespace Logic
 
         public bool CheckGameOver()
         {
-            bool noCheckersLeft = m_Player1.m_Checkers.Count == 0 || m_Player2.m_Checkers.Count == 0;
-            bool noPossibleMoves = !GetPossibleMovesForPlayer(m_Player1) || !GetPossibleMovesForPlayer(m_Player2);
+            bool noCheckersLeft = m_CurrentPlayer.m_Checkers.Count == 0 || m_OtherPlayer.m_Checkers.Count == 0;
+            bool noPossibleMoves = !GetPossibleMovesForPlayer(m_CurrentPlayer) || !GetPossibleMovesForPlayer(m_OtherPlayer);
 
             return noCheckersLeft || noPossibleMoves;
         }
@@ -276,9 +413,16 @@ namespace Logic
             return possibleMoves;
         }
 
-        public Player switchPlayer(Player i_CurrentPlayer)
+        public void SwitchPlayer()
         {
-            return i_CurrentPlayer = i_CurrentPlayer == m_Player1 ? m_Player2 : m_Player1;
+            Player.Swap(ref m_CurrentPlayer, ref m_OtherPlayer);
+
+            //if (m_CurrentPlayer.m_PlayerType == ePlayerType.Computer)
+            //{
+            //    // If the new current player is a computer, process its move
+            //    Move computerMove = ProcessComputerTurn(m_CurrentPlayer);
+            //    ExecuteMove(computerMove, m_CurrentPlayer);  // Executes the computer's move
+            //}
         }
 
         //public void ExecuteCaptures(List<Move> i_Captures, Player i_CurrentPlayer)
@@ -293,7 +437,7 @@ namespace Logic
         //    ExecuteMove(chosenCapture, i_CurrentPlayer);
         //    RemoveMoveFromList(chosenCapture, i_Captures);
         //    Checker currentChecker = m_Board.GetCheckerAt(chosenCapture.m_EndRow, chosenCapture.m_EndCol);
-            
+
         //    while (true)
         //    {
         //        if (i_Captures.Count < 1)
@@ -370,12 +514,21 @@ namespace Logic
 
         public void InitializeNewRound(Player player1, Player player2, ePlayerType player2Type, int boardSize)
         {
-            m_Player1 = player1;
-            m_Player2 = player2;
-            m_Board = new Board(boardSize, m_Player1, m_Player2);
-            m_Player1.m_Checkers.Clear();
-            m_Player2.m_Checkers.Clear();
-            m_Board.InitializeBoard(m_Player1, m_Player2);
+            if(m_CurrentPlayer.m_CheckerSymbol == eCheckerSymbol.WhiteChecker
+               || m_CurrentPlayer.m_CheckerSymbol == eCheckerSymbol.WhiteKing)
+            {
+                m_CurrentPlayer = player1;
+                m_OtherPlayer = player2;
+            }
+            else
+            {
+                m_CurrentPlayer = player2;
+                m_OtherPlayer = player1;
+            }
+            m_Board = new Board(boardSize, m_CurrentPlayer, m_OtherPlayer);
+            m_CurrentPlayer.m_Checkers.Clear();
+            m_OtherPlayer.m_Checkers.Clear();
+            m_Board.InitializeBoard(m_CurrentPlayer, m_OtherPlayer);
         }
     }
 }

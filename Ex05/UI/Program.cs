@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace UI
 {
@@ -10,7 +11,9 @@ namespace UI
     {
         private static void Main()
         {
-            Console.WriteLine("Test");
+            GameUI americanCheckers = new GameUI();
+            americanCheckers.Run();
         }
+
     }
 }

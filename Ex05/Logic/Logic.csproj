@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4EA1E6E8-32F5-4D21-95EC-AA8E80CF5337}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>Logic</RootNamespace>
     <AssemblyName>Logic</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -32,16 +32,25 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Board.cs" />
+    <Compile Include="BoardUpdatedEventArgs.cs" />
     <Compile Include="Checker.cs" />
     <Compile Include="Enums\eCheckerSymbol.cs" />
     <Compile Include="Enums\eCheckerType.cs" />
     <Compile Include="Enums\ePlayerType.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameEndedEventArgs.cs" />
     <Compile Include="Move.cs" />
     <Compile Include="MoveRules.cs" />
     <Compile Include="Player.cs" />
